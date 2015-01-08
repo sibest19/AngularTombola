@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="Tombola">
+<head>
+	<title>
+		Tombola
+	</title>
+	
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/angular-animate.min.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body ng-controller="GameController as game" ng-class="{'game-started': game.started}">
+
+	<div id="hover-container" class="base-animation" ng-class="{'visible': hoverIsVisible && game.lastDrawn > 0 && game.started && !game.finished}">
+		<div id="hover-inner">
+			<h2>Numero estratto:</h2>
+			<span class="number">{{game.lastDrawn}}</span>
+		</div>
+	</div>
+	<h1 class="title" ng-click="game.changeTitle()">{{game.title}}</h1>
+
+	<ul id="numbers-table">
+		<li ng-click="game.toggleNumber(number)" ng-repeat="number in game.table" ng-class="{drawn: number.drawn, last: game.lastDrawn == number.val}"><span class="outer"><span class="inner">{{number.val}}</span></span></li>
+	</ul>
+	<div id="controls">
+		<button class="btn btn-default" ng-click="game.start()" ng-hide="game.started || game.finished">Inizia</button>
+		<div ng-show="game.started && !game.finished">
+			<button class="btn btn-default" ng-click="game.drawNumber()">Estrai</button>
+			<button class="btn btn-default" ng-click="game.stirNumbers()">Mescola</button>
+			<label><input type="checkbox" name="show-history" ng-model="showHistory" /> Mostra storia</label>
+		</div>
+	</div>
+	<div id="history" ng-show="showHistory || game.finished">
+		<ul>
+			<li ng-repeat="number in game.history">{{number}} - </li>
+		</ul>
+	</div>
+</body>
+</html>
